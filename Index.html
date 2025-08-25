@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Payment | Toko Eko</title>
+<style>
+  :root{
+    --brand:#ff9800;         /* oranye utama */
+    --brand-dark:#e68900;    /* oranye lebih gelap */
+    --ink:#222;
+    --muted:#6b7280;
+    --bg:#fff7ed;            /* krem-oranye lembut */
+    --card:#ffffff;
+    --ring:rgba(255,152,0,.35);
+    --ok:#16a34a;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    color:var(--ink);
+    background: radial-gradient(1200px 600px at 80% -50%, #ffd08a 0%, transparent 60%) , var(--bg);
+  }
+
+  .wrap{
+    max-width:900px;
+    margin-inline:auto;
+    padding:28px 18px 56px;
+  }
+
+  .hero{
+    display:flex; align-items:center; gap:14px;
+    margin-bottom:18px;
+  }
+  .dot{
+    width:42px; height:42px; border-radius:50%;
+    background:var(--brand);
+    box-shadow:0 6px 18px var(--ring) inset, 0 6px 18px rgba(0,0,0,.08);
+  }
+  h1{margin:0; font-size:clamp(22px, 3.4vw, 32px)}
+  .sub{color:var(--muted); margin:4px 0 0; font-size:14px}
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap:16px;
+    margin-top:18px;
+  }
+  .card{
+    grid-column: span 12;
+    background:var(--card);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:
+      0 1px 2px rgba(17,24,39,.06),
+      0 10px 30px rgba(255,152,0,.08);
+    border:1px solid rgba(17,24,39,.06);
+  }
+  @media (min-width:760px){
+    .card{grid-column: span 6;}
+  }
+
+  .bank-head{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-bottom:12px;
+  }
+  .bank-id{
+    display:flex; align-items:center; gap:12px;
+  }
+  .logo{
+    width:48px; height:48px; border-radius:14px;
+    display:grid; place-items:center;
+    background:linear-gradient(135deg, var(--brand), var(--brand-dark));
+    color:#fff; font-weight:800;
+    box-shadow:0 8px 24px var(--ring);
+  }
+  .title{font-weight:700; font-size:18px}
+  .pill{
+    background:rgba(255,152,0,.12);
+    color:var(--brand-dark);
+    padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700;
+    border:1px solid rgba(255,152,0,.25);
+  }
+
+  .row{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap:10px;
+    align-items:center;
+    padding:10px 0;
+    border-top:1px dashed rgba(17,24,39,.08);
+  }
+  .row:first-of-type{border-top:0}
+  .label{font-size:12px; color:var(--muted)}
+  .value{font-weight:800; letter-spacing:.3px; font-size:18px}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    border:none; border-radius:999px; padding:10px 14px;
+    background:var(--brand); color:#fff; font-weight:800;
+    cursor:pointer; transition:.2s transform, .2s filter;
+    box-shadow:0 8px 20px var(--ring);
+  }
+  .btn:hover{filter:brightness(1.02)}
+  .btn:active{transform:translateY(1px)}
+  .btn.secondary{
+    background:#111; box-shadow:0 8px 20px rgba(0,0,0,.18);
+  }
+
+  .copy-done{
+    display:none; margin-left:8px; color:var(--ok); font-weight:700; font-size:13px;
+  }
+  .copy-done.show{display:inline}
+  .steps{
+    margin-top:20px; font-size:14px; color:var(--muted)
+  }
+  .steps ol{margin:8px 0 0 18px; padding:0}
+  .footer{
+    margin-top:22px; display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .cta{
+    text-decoration:none
+  }
+
+  /* small helper for monospace blocks */
+  .mono{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing:.3px;
+  }
+  /* little svg icons same color as text */
+  .btn svg{width:18px; height:18px; fill:currentColor}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="dot" aria-hidden="true"></div>
+      <div>
+        <h1>Pembayaran Toko Eko</h1>
+        <p class="sub">Pilih salah satu metode di bawah. Setelah transfer, kirim bukti ke WhatsApp ya.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <!-- BRI -->
+      <section class="card" id="pay-bri">
+        <div class="bank-head">
+          <div class="bank-id">
+            <div class="logo" aria-hidden="true">BRI</div>
+            <div>
+              <div class="title">Bank BRI</div>
+              <div class="pill">Transfer Bank</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">Nomor Rekening</div>
+            <div class="value mono" id="briNo">576201004887504</div>
+          </div>
+          <div>
+            <button class="btn" data-copy="#briNo">
+              <!-- copy icon -->
+              <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+              Salin
+            </button>
+            <span class="copy-done" id="ok-briNo">Tersalin!</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">Atas Nama</div>
+            <div class="value" id="briName">Eko Saputra</div>
+          </div>
+          <div>
+            <button class="btn" data-copy="#briName">
+              <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+              Salin
+            </button>
+            <span class="copy-done" id="ok-briName">Tersalin!</span>
+          </div>
+        </div>
+
+        <div class="steps">
+          <strong>Cara bayar:</strong>
+          <ol>
+            <li>Transfer ke rekening <span class="mono">576201004887504</span> a.n. <strong>Eko Saputra</strong>.</li>
+            <li>Kirim bukti transfer via WhatsApp.</li>
+          </ol>
+        </div>
+
+        <div class="footer">
+          <a class="btn cta" href="https://wa.me/6289699419422?text=Halo%20kak%20Eko%2C%20saya%20sudah%20transfer%20via%20BRI.%20Mohon%20dicek%20ya." target="_blank" rel="noopener">
+            <!-- WA icon -->
+            <svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.57 0 .3 5.27.3 11.76A11.7 11.7 0 0 0 2.1 18l-1.8 6 6.2-1.63a11.9 11.9 0 0 0 5.56 1.42h.01c6.5 0 11.77-5.27 11.77-11.76 0-3.15-1.23-6.11-3.32-8.2zM12.06 21.3c-1.86 0-3.6-.5-5.13-1.44l-.37-.22-3.68.97.98-3.58-.24-.37A9.6 9.6 0 0 1 2.8 11.76c0-5.11 4.16-9.27 9.27-9.27 2.48 0 4.81.96 6.56 2.7a9.19 9.19 0 0 1 2.71 6.56c0 5.11-4.16 9.27-9.28 9.27zm5.1-6.98c-.28-.15-1.65-.81-1.9-.91-.26-.1-.45-.15-.64.15-.19.3-.73.91-.9 1.1-.17.2-.34.22-.62.08-.28-.14-1.2-.44-2.28-1.4-.84-.74-1.4-1.66-1.56-1.94-.16-.28-.02-.43.12-.57.13-.13.3-.34.45-.51.15-.17.2-.28.3-.47.1-.2.05-.36-.02-.51-.07-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.28-1 1-1 2.44s1.02 2.83 1.17 3.03c.15.2 2 3.05 4.82 4.28.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.65-.67 1.88-1.32.23-.65.23-1.2.16-1.32-.06-.12-.25-.19-.52-.33z"/></svg>
+            Kirim bukti via WA
+          </a>
+        </div>
+      </section>
+
+      <!-- OVO -->
+      <section class="card" id="pay-ovo">
+        <div class="bank-head">
+          <div class="bank-id">
+            <div class="logo" aria-hidden="true">OVO</div>
+            <div>
+              <div class="title">OVO</div>
+              <div class="pill">E-Wallet</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">Nomor OVO</div>
+            <div class="value mono" id="ovoNo">089699419422</div>
+          </div>
+          <div>
+            <button class="btn" data-copy="#ovoNo">
+              <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+              Salin
+            </button>
+            <span class="copy-done" id="ok-ovoNo">Tersalin!</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">Atas Nama</div>
+            <div class="value" id="ovoName">Eko Saputra</div>
+          </div>
+          <div>
+            <button class="btn" data-copy="#ovoName">
+              <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+              Salin
+            </button>
+            <span class="copy-done" id="ok-ovoName">Tersalin!</span>
+          </div>
+        </div>
+
+        <div class="steps">
+          <strong>Cara bayar:</strong>
+          <ol>
+            <li>Buka aplikasi OVO &rarr; Transfer &rarr; ke nomor <span class="mono">089699419422</span> (Eko Saputra).</li>
+            <li>Masukkan nominal, konfirmasi, lalu kirim bukti via WhatsApp.</li>
+          </ol>
+        </div>
+
+        <div class="footer">
+          <a class="btn secondary cta" href="https://wa.me/6289699419422?text=Halo%20kak%20Eko%2C%20saya%20ingin%20bayar%20via%20OVO.%20Mohon%20arahkan%20ya." target="_blank" rel="noopener">
+            Chat Admin
+          </a>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="steps" style="margin-top:26px">
+      <strong>Catatan:</strong>
+      <ol>
+        <li>Pastikan nama penerima **Eko Saputra** sebelum transfer.</li>
+        <li>Simpan bukti pembayaran untuk percepatan proses.</li>
+      </ol>
+    </div>
+  </div>
+
+<script>
+  // Tombol salin yang benar-benar bekerja
+  function copyText(selector, okId){
+    const el = document.querySelector(selector);
+    const txt = (el?.textContent || "").trim();
+    if(!txt) return;
+    navigator.clipboard.writeText(txt).then(()=>{
+      const ok = document.querySelector(okId);
+      if(ok){
+        ok.classList.add("show");
+        setTimeout(()=>ok.classList.remove("show"), 1600);
+      }
+    }).catch(()=>{ /* fallback lama (jarang dibutuhkan) */
+      const ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); }catch(e){}
+      document.body.removeChild(ta);
+      const ok = document.querySelector(okId);
+      if(ok){ ok.classList.add("show"); setTimeout(()=>ok.classList.remove("show"), 1600); }
+    });
+  }
+
+  document.querySelectorAll(".btn[data-copy]").forEach(btn=>{
+    btn.addEventListener("click", e=>{
+      const sel = btn.getAttribute("data-copy");
+      const valueEl = document.querySelector(sel);
+      const okId = "#ok-" + (valueEl?.id || "");
+      copyText(sel, okId);
+    });
+  });
+</script>
+</body>
+</html>
